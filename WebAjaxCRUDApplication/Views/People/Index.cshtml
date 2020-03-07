@@ -1,0 +1,177 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<!DOCTYPE html>
+
+<!--html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <input type="text" id="txtName" />
+    <input type="button" id="btnGet" value="Get Current Time" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnGet").click(function () {
+                var person = '{Name: "' + $("#txtName").val() + '" }';
+                $.ajax({
+                    type: "POST",
+                    url: "/api/AjaxAPI/AjaxMethod",
+                    data: person,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        alert("Hello: " + response.Name + ".\nCurrent Date and Time: " + response.DateTime);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html -->
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+            <tbody class="tbody"></tbody>
+        </table>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <lable>Name</lable>
+            <input type="text" id="txtName" class="form-control empty" />
+            <input type="hidden" id="hdnId" class="form-control empty" />
+        </div>
+        <div class="form-group">
+            <lable>Email</lable>
+            <input type="email" id="txtEmail" class="form-control empty" />
+        </div>
+        <div class="form-group">
+            <button onclick="addUser()" id="btnAdd" class="btn btn-success">Add Data</button>
+            <button onclick="editSaveUser()" id="btnEdit" class="btn btn-success">Save Edit Data</button>
+        </div>
+    </div>
+</div>
+<script>
+    GetAllData();
+    function GetAllData() {
+        $('#btnEdit').hide();
+        $('#btnAdd').show();
+        $.ajax({
+            url: 'http://localhost:32814/api/People',
+            type: 'GET',
+            success: function (res) {
+                $('.tbody').html('');
+                var html = "";
+                $.each(res, function (index, item) {
+                    html += '<tr>';
+                    html += '<td>' + item.Name + '</td>';
+                    html += '<td>' + item.Email + '</td>';
+                    html += '<td><a href="#" onclick=editUser(' + item.ID + ')>Edit</a><a href="#" onclick=deleteUser(' + item.ID + ')>Delete</a></td>';
+                    html += '</tr>';
+                });
+                $('.tbody').append(html);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+    function editUser(id) {
+        $.ajax({
+            url: 'http://localhost:32814/api/GetPerson',
+            type: 'GET',
+            data: { 'id': id },
+            success: function (res) {
+                if (res != null) {
+                    $('#txtName').val(res.Name);
+                    $('#txtEmail').val(res.Email);
+                    $('#hdnId').val(res.ID);
+                }
+                $('#btnEdit').show();
+                $('#btnAdd').hide();
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+    function deleteUser(id) {
+        $('#btnEdit').hide();
+        $('#btnAdd').show();
+        if (confirm("Are you sure, you want to delete the data?")) {
+            $.ajax({
+                url: 'http://localhost:32814/api/DeletePerson/' + id,
+                type: 'DELETE',
+                success: function (res) {
+                    if (res != null) {
+                        GetAllData();
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    }
+    function addUser() {
+        alert("addUser");
+        debugger;
+        var customers = {
+            Name: $('#txtName').val(),
+            Email: $('#txtEmail').val()
+        };
+        $.ajax({
+            url: 'http://localhost:32814/api/PostPerson',
+            type: 'POST',
+            data: customers,
+            success: function (res) {
+                if (res != null) {
+                    GetAllData();
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+    function editSaveUser() {
+         var customers = {
+            Id: $('#hdnId').val(),
+            Name: $('#txtName').val(),
+            Email: $('#txtEmail').val()
+        };
+        $.ajax({
+            url: 'http://localhost:32814/api/PutPerson',
+            type: 'POST',
+            data: customers ,
+            success: function (res) {
+                $('#btnEdit').hide();
+                $('#btnAdd').show();
+                $('.empty').val('');
+                if (res != null) {
+                    GetAllData();
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+
+</script>
