@@ -67,7 +67,10 @@
         </div>
     </div>
 </div>
-<script  type="text/javascript" >
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script  language="JavaScript" type="text/javascript" >
     GetAllData();
     function GetAllData() {
         //$('#btnEdit').hide();
@@ -75,6 +78,7 @@
         $.ajax({
             url: 'http://localhost:32814/api/People',
             type: 'GET',
+            crossDomain: true,
             success: function (res) {
                 $('.tbody').html('');
                 var html = "";
@@ -94,8 +98,10 @@
     }
     function editUser(id) {
         $.ajax({
+            crossDomain: true,
             url: 'http://localhost:32814/api/GetPerson',
             type: 'GET',
+            crossDomain: true,
             data: { 'id': id },
             success: function (res) {
                 if (res != null) {
@@ -116,8 +122,10 @@
         $('#btnAdd').show();
         if (confirm("Are you sure, you want to delete the data?")) {
             $.ajax({
+                crossDomain: true,
                 url: 'http://localhost:32814/api/DeletePerson/' + id,
                 type: 'DELETE',
+                crossDomain: true,
                 success: function (res) {
                     if (res != null) {
                         GetAllData();
@@ -130,6 +138,7 @@
         }
     }
     function addUser() {
+
         alert("addUser");
         debugger;
         var customers = {
@@ -137,8 +146,10 @@
             LastName: $('#txtLastName').val()
         };
         $.ajax({
+            crossDomain: true,
             url: 'http://localhost:32814/api/PostPerson',
             type: 'POST',
+            crossDomain: true,
             data: customers,
             success: function (res) {
                 if (res != null) {
@@ -151,14 +162,16 @@
         });
     }
     function editSaveUser() {
-         var customers = {
+        var customers = {
             Id: $('#hdnId').val(),
             Name: $('#txtFirstName').val(),
             Email: $('#txtLastName').val()
         };
         $.ajax({
+            
             url: 'http://localhost:32814/api/PutPerson',
             type: 'POST',
+            crossDomain: true,
             data: customers ,
             success: function (res) {
                 $('#btnEdit').hide();
