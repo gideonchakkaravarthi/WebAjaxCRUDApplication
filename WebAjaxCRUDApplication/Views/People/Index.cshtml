@@ -42,8 +42,8 @@
 <script  language="JavaScript" type="text/javascript" >
     GetAllData();
     function GetAllData() {
-        //$('#btnEdit').hide();
-        //$('#btnAdd').show();
+        $('#btnEdit').hide();
+        $('#btnAdd').show();
         $.ajax({
             url: 'http://localhost:32814/api/People',
             type: 'GET',
@@ -68,7 +68,7 @@
     }
     function editUser(id) {
         $.ajax({
-            url: 'http://localhost:32814/api/GetPerson',
+            url: 'http://localhost:32814/api/People',
             type: 'GET',
             crossDomain: true,
             contentType: "application/json",
@@ -110,8 +110,7 @@
     function addUser() {
 
         alert("addUser");
-        debugger;
-        var customers = {
+         var customers = {
             FirstName: $('#txtFirstName').val(),
             LastName: $('#txtLastName').val()
         };
