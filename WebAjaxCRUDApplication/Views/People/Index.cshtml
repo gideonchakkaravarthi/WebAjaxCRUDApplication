@@ -45,10 +45,13 @@
         $('#btnEdit').hide();
         $('#btnAdd').show();
         $.ajax({
-            url: 'http://localhost:32814/api/People',
+            url: 'http://localhost:32814/api/People/GetPeople',
             type: 'GET',
             crossDomain: true,
-            contentType: "application/json",
+            headers: {
+                'Authorization': 'Basic mytoken',
+                'Content-Type': 'application/json'
+            },
             success: function (res) {
                 $('.tbody').html('');
                 var html = "";
@@ -68,10 +71,13 @@
     }
     function editUser(id) {
         $.ajax({
-            url: 'http://localhost:32814/api/People',
+            url: 'http://localhost:32814/api/People/GetPerson',
             type: 'GET',
             crossDomain: true,
-            contentType: "application/json",
+            headers: {
+                'Authorization': 'Basic mytoken',
+                'Content-Type': 'application/json'
+            },
             data: { 'id': id },
             success: function (res) {
                 if (res != null) {
@@ -92,10 +98,13 @@
         $('#btnAdd').show();
         if (confirm("Are you sure, you want to delete the data?")) {
             $.ajax({
-                url: 'http://localhost:32814/api/DeletePerson/' + id,
+                url: 'http://localhost:32814/apiPeople/DeletePerson/' + id,
                 type: 'DELETE',
                 crossDomain: true,
-                contentType: "application/json",
+                headers: {
+                    'Authorization': 'Basic mytoken',
+                    'Content-Type': 'application/json'
+                },
                 success: function (res) {
                     if (res != null) {
                         GetAllData();
@@ -116,10 +125,13 @@
         };
         $.ajax({
             
-            url: 'http://localhost:32814/api/PostPerson',
+            url: 'http://localhost:32814/api/People/PostPerson',
             type: 'POST',
             crossDomain: true,
-            contentType: "application/json",
+            headers: {
+                'Authorization': 'Basic mytoken',
+                'Content-Type': 'application/json'
+            },
             data: customers,
             success: function (res) {
                 if (res != null) {
@@ -139,11 +151,14 @@
         };
         $.ajax({
             
-            url: 'http://localhost:32814/api/PutPerson',
+            url: 'http://localhost:32814/api/People/PutPerson',
             type: 'POST',
             crossDomain: true,
-            contentType: "application/json",
-            data: customers ,
+            headers: {
+                'Authorization': 'Basic mytoken',
+                'Content-Type': 'application/json'
+            },
+            data: customers,
             success: function (res) {
                 $('#btnEdit').hide();
                 $('#btnAdd').show();
